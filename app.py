@@ -9,7 +9,6 @@ def index():
 
 @app.route("/add_faces")
 def run_script1():
-    # Run take_pic.py, optionally with a filename passed as query param
     filename = request.args.get("filename")
     cmd = ["python3", "take_pic.py"]
     if filename:
