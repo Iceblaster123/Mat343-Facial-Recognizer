@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branding + Python Scripts</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #f0f4ff, #d9e4ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero {
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            color: #1a1a1a;
+        }
+
+        /* Decorative wave shapes */
+        .hero::before, .hero::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200px;
+            background: rgba(59, 73, 223, 0.1);
+            border-radius: 50%;
+            left: -50%;
+        }
+
+        .hero::before {
+            top: -100px;
+        }
+
+        .hero::after {
+            bottom: -100px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .hero h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #3b49df;
+            margin: 10px auto 0;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #333;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .hero .buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero .buttons button {
+            padding: 15px 35px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 2px solid #3b49df;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        #script1 {
+            background-color: #3b49df;
+            color: white;
+            border: none;
+        }
+
+        #script2 {
+            background-color: transparent;
+            color: #3b49df;
+        }
+
+        #script2:hover {
+            background-color: #3b49df;
+            color: white;
+        }
+
+        pre {
+            margin-top: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            text-align: left;
+            white-space: pre-wrap;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        @media(max-width: 600px){
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero .buttons button {
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>FACIAL RECOGNITION SOFTWARE</h1>
+        <p>
+            This is a basic facial recognition software that was built for an Honors Contract at
+            ASU - Barrett The Honors College. Check if your face is in the Database, and if it isn't, feel
+            free to add it!
+        </p>
+        <div class="buttons">
+            <button id="script1">Run Face Adder</button>
+            <button id="script2">Run Face Recognizer</button>
+        </div>
+        <pre id="output"></pre>
+    </div>
+
+    <script>
+        async function runScript(script) {
+            let url = script === 1 ? "/add_faces" : "/find_faces";
+
+            // If running the face adder, prompt the user for a filename
+            if (script === 1) {
+                const name = prompt("Enter filename (no extension) for the photo:");
+                if (name === null) { // user cancelled
+                    document.getElementById("output").textContent = "Add cancelled by user.";
+                    return;
+                }
+                const trimmed = name.trim();
+                if (trimmed === "") {
+                    document.getElementById("output").textContent = "Please provide a non-empty filename.";
+                    return;
+                }
+                url += `?filename=${encodeURIComponent(trimmed)}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Network response was not ok");
+                const data = await response.json();
+                document.getElementById("output").textContent =
+                    `Output:\n${data.output}\nError:\n${data.error}`;
+            } catch (err) {
+                document.getElementById("output").textContent = "Error: " + err;
+            }
+        }
+
+        document.getElementById("script1").addEventListener("click", () => runScript(1));
+        document.getElementById("script2").addEventListener("click", () => runScript(2));
+    </script>
+</body>
+</html>
