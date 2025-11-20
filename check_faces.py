@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 import os
 
-# Dynamically build known images list from files in the images/ directory
 image_dir = "images"
 valid_exts = (".jpg", ".jpeg", ".png", ".bmp")
 
@@ -32,15 +31,15 @@ else:
             print(f"Error loading '{filepath}': {e}")
 
 
-video = cv2.VideoCapture(0) # opens camera so we can see the video
+video = cv2.VideoCapture(0)
 
-if not video.isOpened(): # edge case catching
+if not video.isOpened():
     print("Cannot open camera")
     exit()
 
 while True:
     ret, frame = video.read()
-    if not ret: # edge case catching
+    if not ret: 
         print("Can't receive frame (stream end?). Exiting ...")
         break
     
@@ -72,13 +71,12 @@ while True:
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         cv2.putText(frame, name, (left + 20, bottom - 6), cv2.FONT_HERSHEY_COMPLEX, 1.0, (255, 255, 255), 1)
 
-    # Show the output
     cv2.imshow('Video', frame)
 
 
 
     cv2.imshow('frame', frame)
-    if cv2.waitKey(1) == ord('q'): # Press 'q' to quit
+    if cv2.waitKey(1) == ord('q'):
         print("Quiting...")
         break
 

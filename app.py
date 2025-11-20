@@ -18,7 +18,6 @@ def run_script1():
 
 @app.route("/find_faces")
 def run_script2():
-    # Run script2.py
     result = subprocess.run(["python3", "check_faces.py"], capture_output=True, text=True)
     return jsonify({"output": result.stdout, "error": result.stderr})
 

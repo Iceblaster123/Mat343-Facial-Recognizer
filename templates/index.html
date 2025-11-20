@@ -37,7 +37,6 @@
             color: #1a1a1a;
         }
 
-        /* Decorative wave shapes */
         .hero::before, .hero::after {
             content: '';
             position: absolute;
@@ -164,10 +163,9 @@
         async function runScript(script) {
             let url = script === 1 ? "/add_faces" : "/find_faces";
 
-            // If running the face adder, prompt the user for a filename
             if (script === 1) {
                 const name = prompt("Enter filename (no extension) for the photo:");
-                if (name === null) { // user cancelled
+                if (name === null) {
                     document.getElementById("output").textContent = "Add cancelled by user.";
                     return;
                 }

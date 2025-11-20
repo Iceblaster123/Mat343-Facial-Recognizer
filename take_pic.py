@@ -8,7 +8,6 @@ if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
 
-# Accept optional filename from command-line argument
 filename_arg = None
 if len(sys.argv) > 1:
     filename_arg = sys.argv[1]
@@ -24,7 +23,6 @@ while True:
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('c'):
-        # Use passed filename if available, otherwise ask in terminal
         if filename_arg:
             filename = filename_arg
         else:
@@ -33,7 +31,6 @@ while True:
         print(f"Saved {filename}.png")
 
     elif key == ord('q'):
-        # Quit the loop
         print("Quitting...")
         break
 
